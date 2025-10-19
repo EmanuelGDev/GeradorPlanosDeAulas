@@ -49,7 +49,6 @@ export class service {
   }
 
   async listLessons(user_email: string) {
-  // 1️⃣ Busca todos os relacionamentos do usuário
   const { data: userPlans, error: relError } = await supabase
     .from("user_class_plans")
     .select("class_plan_id")
@@ -59,10 +58,8 @@ export class service {
     throw new Error(relError.message);
   }
 
-  // 2️⃣ Extrai os IDs dos planos
   const planIds = userPlans.map((p) => p.class_plan_id);
 
-  // 3️⃣ Busca os planos correspondentes
   const { data: planos, error: planosError } = await supabase
     .from("planos_de_aula")
     .select("*")

@@ -16,7 +16,6 @@ class AuthService{
       throw new Error("Preencha todos os campos");
     }
 
-    // Busca usuário apenas pelo email
     const {data :user , error} = await supabase
         .from('users')
         .select('id,name,email,password')
