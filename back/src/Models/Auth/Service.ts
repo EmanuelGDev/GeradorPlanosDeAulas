@@ -10,13 +10,11 @@ class AuthService{
   }
 
   async login(email: string, password: string) {
-    console.log("Login attempt for email:", email);
     const jwt_secret = process.env.JWT_SECRET as string;
 
     if (!email || !password) {
       throw new Error("Preencha todos os campos");
     }
-    console.log("Entrou com todos os dados");
 
     // Busca usuário apenas pelo email
     const {data :user , error} = await supabase
@@ -25,8 +23,6 @@ class AuthService{
         .eq('email', email)
         .eq('password', password)
         .maybeSingle()
-
-        console.log("User fetch result:", { user, error });
 
     if (error || !user) {
       throw new Error("Email ou senha incorretos");

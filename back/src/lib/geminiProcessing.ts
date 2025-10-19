@@ -2,10 +2,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-// Interface do plano de aula
+
 export interface LessonPlan {
   introducao_ludica: string;
-  objetivo_bncc: any; // pode refinar se quiser { codigo: string; descricao: string }
+  objetivo_bncc: any; 
   passo_a_passo: string;
   rubrica_avaliacao: string;
 }
@@ -38,9 +38,7 @@ Sua resposta DEVE ser APENAS um objeto JSON válido, sem nenhum texto adicional 
 
 Retorne APENAS o objeto JSON, sem markdown nem texto adicional.`;
 
-  console.log("Prompt enviado ao Gemini, aguardando resposta...");
 
-  // Timeout de 40s para evitar travamento
   let result;
   try {
     result = await Promise.race([
@@ -57,7 +55,6 @@ Retorne APENAS o objeto JSON, sem markdown nem texto adicional.`;
   const responseText = result.response.text();
   console.log("Resposta recebida do Gemini:", responseText);
 
-  // Formatação e parse do JSON
   let planoJSON: LessonPlan;
   try {
     const cleaned = responseText.trim();
@@ -67,11 +64,9 @@ Retorne APENAS o objeto JSON, sem markdown nem texto adicional.`;
 
     planoJSON = JSON.parse(jsonString) as LessonPlan;
   } catch (error) {
-    console.error("Erro ao converter resposta do Gemini em JSON:", responseText);
     throw new Error("A resposta do Gemini não veio em formato JSON válido.");
   }
 
-  console.log("JSON do plano de aula parseado com sucesso:", planoJSON);
 
   return planoJSON;
 }

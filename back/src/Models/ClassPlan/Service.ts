@@ -15,8 +15,6 @@ export class service {
       rubrica_avaliacao
     } =  planoJSON
 
-    // Inserção no Supabase
-    console.log("Inserindo dados no Supabase...");
     const { data, error } = await supabase
       .from("planos_de_aula")
       .insert([{
@@ -33,13 +31,11 @@ export class service {
       .select();
 
     if (error) {
-      console.error("Erro ao inserir no Supabase:", error.message);
       throw new Error(error.message);
     }
 
     const LessonId = data[0].id;
 
-    console.log("Associando plano de aula ao usuário...");
     const { data: associationData, error: associationError } =
       await supabase
         .from("user_class_plans")
@@ -49,7 +45,6 @@ export class service {
         }])
         .select();
 
-    console.log("Plano de aula criado com sucesso:");
     return data;
   }
 
@@ -61,7 +56,6 @@ export class service {
     .eq("user_email", user_email);
 
   if (relError) {
-    console.error("Erro ao buscar planos do usuário:", relError.message);
     throw new Error(relError.message);
   }
 
@@ -74,10 +68,7 @@ export class service {
     .select("*")
     .in("id", planIds);
 
-    console.log("Planos de aula encontrados:", planos);
-
   if (planosError) {
-    console.error("Erro ao buscar planos de aula:", planosError.message);
     throw new Error(planosError.message);
   }
 
